@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -12,7 +13,7 @@ import javax.swing.text.html.HTMLEditorKit;
 public class Log {
 
 	JEditorPane chat;
-	String[] log = {};
+	ArrayList<String> log = new ArrayList<String>();
 	boolean conn = false;
 	JFrame f;
 	String beg = "<HTML><HEAD><style>body{font-family:Arial;font-size:10px;text-align:justified;}</style></HEAD><BODY>";
@@ -32,7 +33,7 @@ public class Log {
 	}
 	
 	public void say(String msg){
-		log = Util.extend(log,new String[]{msg});
+		log.add(msg);
 		refresh();
 		f.toFront();
 	}
@@ -40,9 +41,9 @@ public class Log {
 	@SuppressWarnings("deprecation")
 	public void refresh(){
 		if(log != null){
-			String text = beg+log[0];
-			for(int k = 1; k < log.length; k++){
-				text = text+"<br />"+log[k];
+			String text = beg;
+			for(String s:log){
+				text = text.equals(beg)?s:text+"<br />"+s;
 			}
 			text+=end;
 			FileWriter fw = null;            

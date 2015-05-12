@@ -15,6 +15,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -37,7 +38,7 @@ public class Client extends JFrame{
 	Socket socket;
 	BufferedReader in;
     PrintWriter out;
-    String[] last = null;
+    ArrayList<String> last = new ArrayList<String>();
     int lastnb = 0;
     Log l;
     Thread t;
@@ -134,20 +135,20 @@ public class Client extends JFrame{
 						if(lastnb > 0){
 							lastnb--;
 						}
-						champs.setText(last[lastnb]);
+						champs.setText(last.get(lastnb));
 						break;
 					case KeyEvent.VK_DOWN:
-						if(lastnb < last.length){
+						if(lastnb < last.size()){
 							lastnb++;
 						}
-						if(lastnb == last.length){
+						if(lastnb == last.size()){
 							champs.setText("");
 						}else{
-							champs.setText(last[lastnb]);
+							champs.setText(last.get(lastnb));
 						}
 						break;
 					default:
-						lastnb = last==null?0:last.length;
+						lastnb = last==null?0:last.size();
 						break;
 				}
 			}
@@ -169,8 +170,8 @@ public class Client extends JFrame{
 	void envoyer(){
 		String msg = champs.getText();
 		champs.setText(null);
-		last = Util.extend(last,new String[]{msg});
-		lastnb = last.length;
+		last.add(msg);
+		lastnb = last.size();
 		
 		if(conn && msg != null &&  msg != "" && msg.toCharArray().length > 0){
 			out.println(msg);
